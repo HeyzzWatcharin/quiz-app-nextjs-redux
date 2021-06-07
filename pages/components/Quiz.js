@@ -154,13 +154,13 @@ class Quiz extends Component {
             >
               Next
             </NextStepCSS>
-            <BackStepCSS disabled={
+            {/* <BackStepCSS disabled={
                 clickedAnswer && Object.keys(quiestions).length >= step
                   ? false
                   : true
               }>
                 Back
-              </BackStepCSS>
+              </BackStepCSS> */}
           </>
         ) : (
           <FinalPage>
@@ -176,12 +176,8 @@ class Quiz extends Component {
   } 
 }
 
-const mapStateToProps = state => ({
-
-})
-
 const mapDispatchToProps = ({
-
+  nextstep: () => ({ type: "NEXTSTEP"})
 })
 
-export default connect(mapStateToProps,mapDispatchToProps) (Quiz);
+export default connect(null,mapDispatchToProps) (Quiz);

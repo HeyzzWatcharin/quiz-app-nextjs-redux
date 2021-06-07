@@ -1,6 +1,6 @@
 
 import { useRouter } from "next/dist/client/router";
-import React,{} from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 
 const Ul = styled.ul`
@@ -27,7 +27,7 @@ const Ul = styled.ul`
   }
 `;
 
-export default function Nav() {
+export default function Nav(props) {
   const router = useRouter();
   return (
     <div>
@@ -36,7 +36,7 @@ export default function Nav() {
           <a class="active" onClick={ () => router.push("/")}>โปรแกรมทำข้อสอบออนไลน์</a>
         </li>
         <li className="setPosition">
-          <a>Watcharin Rachadet</a>
+          <a>Watcharin</a>
         </li>
       </Ul>
       <style jsx>{`

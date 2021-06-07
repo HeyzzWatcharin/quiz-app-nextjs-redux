@@ -1,5 +1,5 @@
 import { useRouter } from "next/dist/client/router";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Input = styled.input`
@@ -14,17 +14,19 @@ const Button = styled.button`
   border: none;
   color: white;
   width: 100px;
-  height:30px;
+  height: 30px;
 `;
 
 function login() {
+  const userName = "";
   const router = useRouter();
   return (
     <>
       <h1>Wellcom To Quiz App</h1>
+
       <Input type="text" placeholder="Please Input Your Name" />
       <br />
-      <Button type="button" onClick={() => router.push("/components/QuizPage")}>
+      <Button type="submit" onClick={() => router.push("/components/QuizPage")}>
         Login
       </Button>
     </>
