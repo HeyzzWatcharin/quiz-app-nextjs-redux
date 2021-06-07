@@ -1,12 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Question from "./question/Question";
 import Answer from "./answer/Answer";
 import styled from "styled-components";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/dist/client/router";
 
 const NextStepCSS = styled.button`
   background-color: #009e00;
-  margin-top:5%;
+  margin-top: 5%;
   margin-left: 30%;
   color: #fff;
   padding: 10px 30px;
@@ -21,17 +22,26 @@ const NextStepCSS = styled.button`
   }
 `;
 
+const Button = styled.button`
+  background: palevioletred;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  width: 100px;
+  height: 30px;
+`;
+
 const BackStepCSS = styled(NextStepCSS)`
   background-color: blue;
   margin-left: 5%;
   &:hover {
     background-color: red;
   }
-`
+`;
 
 const FinalPage = styled.div`
   text-align: center;
-    h1 {
+  h1 {
     text-align: center;
     margin: 15px 0;
     font-size: 25px;
@@ -43,141 +53,80 @@ const FinalPage = styled.div`
   }
 `;
 
-class Quiz extends Component {
-  state = {
-    quiestions: {
-      1: "ข้อไหนเป็นสัตว์ปี",
-      2: "สีไหนไม่อยู่ในแม่สี",
-      3: "ข้อ 1 ถูกต้อง",
-      4: "ข้อ 2 ถูกต้อง",
-      5: "ข้อ 3 ถูกต้อง",
-    },
-    answers: {
-      1: {
-        1: "หมู",
-        2: "หมา",
-        3: "กา",
-        4: "แมว",
-      },
-      2: {
-        1: "แดง",
-        2: "เหลือง",
-        3: "น้ำเงิน",
-        4: "ม่วง",
-      },
-      3: {
-        1: "ตอบข้อ 1",
-        2: "ตอบข้อ 2",
-        3: "ตอบข้อ 3",
-        4: "ตอบข้อ 4",
-      },
-      4: {
-        1: "ตอบข้อ 1",
-        2: "ตอบข้อ 2",
-        3: "ตอบข้อ 3",
-        4: "ตอบข้อ 4",
-      },
-      5: {
-        1: "ตอบข้อ 1",
-        2: "ตอบข้อ 2",
-        3: "ตอบข้อ 3",
-        4: "ตอบข้อ 4",
-      },
-    },
-    correctAnswers: {
-      1: "3",
-      2: "4",
-      3: "1",
-      4: "2",
-      5: "3",
-    },
-    correctAnswer: 0,
-    clickedAnswer: 0,
-    step: 1,
-    score: 0,
-  };
-
-  checkAnswer = (answer) => {
-    const { correctAnswers, step, score } = this.state;
-    if (answer === correctAnswers[step]) {
-      this.setState({
-        score: score + 1,
-        correctAnswer: correctAnswers[step],
-        clickedAnswer: answer,
-      });
+const Quiz = () => {
+  const router = useRouter();
+  const { step, questions, score, hashAnswer } = useSelector(
+    (state) => state.quiz
+  );
+  const [correct, setCorrect] = useState([null, null, null, null]);
+  const dispatch = useDispatch();
+  const checkAnswer = (userAnswer, i) => {
+    if (questions[step].answerId === userAnswer) {
+      dispatch({ type: "ADD_SCORE" });
+      setCorrect(
+        correct.map((c, j) => {
+          if (j === i) {
+            return true;
+          }
+          return c;
+        })
+      );
     } else {
-      this.setState({
-        correctAnswer: 0,
-        clickedAnswer: answer,
-      });
+      setCorrect(
+        correct.map((c, j) => {
+          if (j === i) {
+            return false;
+          }
+          return c;
+        })
+      );
     }
+
+    dispatch({ type: "SET_HASH_ANSWER", payload: true });
   };
-
-  nextStep = (step) => {
-    this.setState({
-      step: step + 1,
-      correctAnswer: 0,
-      clickedAnswer: 0,
-    });
+  const resetQuiz = () => {
+    dispatch({ type: "RESET_ALL" });
+    router.push("/");
   };
-
-  backStep = (step) => {
-    this.setState({
-      step: step -1,
-      correctAnswer: 0,
-      clickedAnswer: 0,
-    })
-  }
-
-  render() {
-    let { quiestions, answers, correctAnswer, clickedAnswer, step, score } =
-      this.state;
-    return (
-      <div className="Content">
-        {step <= Object.keys(quiestions).length ? (
-          <>
-            <Question question={quiestions[step]} />
-            <Answer
-              answer={answers[step]}
-              step={step}
-              checkAnswer={this.checkAnswer}
-              correctAnswer={correctAnswer}
-              clickedAnswer={clickedAnswer}
-            />
-            <NextStepCSS
-              disabled={
-                clickedAnswer && Object.keys(quiestions).length >= step
-                  ? false
-                  : true
-              }
-              onClick={() => this.nextStep(step)}
+  return (
+    <div className="Content">
+      {step < questions.length ? (
+        <>
+          <Question question={questions[step].name} />
+          {questions[step].choice.map((c, i) => (
+            <div
+              style={{ cursor: hashAnswer ? "not-allowed" : "pointer" }}
+              onClick={() => (!hashAnswer ? checkAnswer(c.id, i) : null)}
+              key={c.id}
             >
-              Next
-            </NextStepCSS>
-            {/* <BackStepCSS disabled={
-                clickedAnswer && Object.keys(quiestions).length >= step
-                  ? false
-                  : true
-              }>
-                Back
-              </BackStepCSS> */}
-          </>
-        ) : (
-          <FinalPage>
-            <h1>Congratulation</h1>
-            <p>
-              Your score is: {score} / {Object.keys(quiestions).length}
-            </p>
-            <p>Thank you!</p>
-          </FinalPage>
-        )}
-      </div>
-    );
-  } 
-}
+              <Answer correct={correct[i]} choice={c.text} />
+            </div>
+          ))}
+          <NextStepCSS
+            disabled={!hashAnswer}
+            onClick={() => {
+              dispatch({ type: "NEXT_STEP" });
+              dispatch({ type: "SET_HASH_ANSWER", payload: false });
+              setCorrect([null, null, null, null]);
+            }}
+          >
+            Next
+          </NextStepCSS>
+        </>
+      ) : (
+        <FinalPage>
+          <h1>Congratulation</h1>
+          <p>
+            Your score is: {score} / {questions.length}
+          </p>
+          <p>Thank you!</p>
+          <Button onClick={resetQuiz}>
+            RESTART
+          </Button>
+        </FinalPage>
+      )}
+    </div>
+  );
+};
 
-const mapDispatchToProps = ({
-  nextstep: () => ({ type: "NEXTSTEP"})
-})
-
-export default connect(null,mapDispatchToProps) (Quiz);
+export default Quiz;

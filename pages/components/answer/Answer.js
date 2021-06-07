@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const AnswerCss = styled.ul`
@@ -8,7 +8,7 @@ const AnswerCss = styled.ul`
 
   li {
     padding: 10px;
-    width:50%;
+    width: 50%;
     border-left: 4px solid #ff3b3b;
     background-color: #bbb;
     margin: 0 0 5px;
@@ -37,37 +37,17 @@ const AnswerCss = styled.ul`
 
 const Container = styled.div`
   margin-left: 30%;
-`
+`;
 
-const Answer = (props) => {
-  let answers = Object.keys(props.answer).map((qAnswer, i) => (
-    <li
-      className={
-        props.correctAnswer === qAnswer
-          ? "correct"
-          : props.clickedAnswer === qAnswer
-          ? "incorrect"
-          : ""
-      }
-      onClick={() => props.checkAnswer(qAnswer)}
-      key={qAnswer}
-    >
-      {props.answer[qAnswer]}
-    </li>
-  ));
-
+const Answer = ({ choice, correct }) => {
+  console.log(correct, choice);
   return (
     <Container>
-      <AnswerCss disabled={props.clickedAnswer ? true : false}>
-        {answers}
+      <AnswerCss>
+        <li className={correct ? "correct" : correct === false ? "incorrect" : null}>
+          {choice}
+        </li>
       </AnswerCss>
-      <div>
-        {props.correctAnswer
-          ? "Correct Answer!"
-          : props.clickedAnswer
-          ? "Incorrect Answer!"
-          : ""}
-      </div>
     </Container>
   );
 };

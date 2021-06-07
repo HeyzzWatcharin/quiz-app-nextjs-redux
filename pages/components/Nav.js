@@ -29,14 +29,15 @@ const Ul = styled.ul`
 
 export default function Nav(props) {
   const router = useRouter();
+  console.log(router.query);
   return (
     <div>
       <Ul>
         <li>
-          <a class="active" onClick={ () => router.push("/")}>โปรแกรมทำข้อสอบออนไลน์</a>
+          <a className="active" onClick={ () => router.push("/")}>โปรแกรมทำข้อสอบออนไลน์</a>
         </li>
         <li className="setPosition">
-          <a>Watcharin</a>
+          <a>{router.query.Login}</a>
         </li>
       </Ul>
       <style jsx>{`
