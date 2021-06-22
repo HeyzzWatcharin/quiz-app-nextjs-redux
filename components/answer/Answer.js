@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const AnswerCss = styled.ul`
@@ -40,11 +40,14 @@ const Container = styled.div`
 `;
 
 const Answer = ({ choice, correct }) => {
-  console.log(correct, choice);
   return (
     <Container>
       <AnswerCss>
-        <li className={correct ? "correct" : correct === false ? "incorrect" : null}>
+        <li
+          className={
+            correct ? "correct" : correct === false ? "incorrect" : null
+          }
+        >
           {choice}
         </li>
       </AnswerCss>

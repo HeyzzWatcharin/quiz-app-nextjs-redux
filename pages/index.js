@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import Quiz from "./components/Quiz";
 import Login from './login'
 
 const Container = styled.div`

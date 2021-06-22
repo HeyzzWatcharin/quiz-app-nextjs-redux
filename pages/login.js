@@ -2,6 +2,14 @@ import { useRouter } from "next/dist/client/router";
 import React, { useState } from "react";
 import styled from "styled-components";
 
+const PhotoMain = styled.img`
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  align-self: center;
+`;
+
 const Input = styled.input`
   border-radius: 10px;
   padding: 10px;
@@ -19,15 +27,27 @@ const Button = styled.button`
 
 function login() {
   const router = useRouter();
-  const [user,setUser] = useState("")
+  const [user, setUser] = useState("");
   return (
     <>
-      <h1>Wellcom To Quiz App</h1>
-      <Input type="text" placeholder="Please Input Your Name" onChange={(e)=> setUser(e.target.value)} value={user}  />
-      {/* {user}
-      <button onClick={() => setUser("")} >Clear</button> */}
+      <PhotoMain
+        src="/1.png"
+        alt="Picture of the author"
+        width={500}
+        height={500}
+      />
+      <h1>Welcome To Quiz App</h1>
+      <Input
+        type="text"
+        placeholder="Please Input Your Name"
+        onChange={(e) => setUser(e.target.value)}
+        value={user}
+      />
       <br />
-      <Button type="submit" onClick={() => router.push(`/components/QuizPage?Login=${user}`)}>
+      <Button
+        type="submit"
+        onClick={() => router.push(`/quizpage?Login=${user}`)}
+      >
         Login
       </Button>
     </>

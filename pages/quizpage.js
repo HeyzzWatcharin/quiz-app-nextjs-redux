@@ -1,6 +1,6 @@
 import React from "react";
-import Nav from "./Nav";
-import Quiz from "./Quiz";
+import Nav from "../components/Nav";
+import Quiz from "../components/Quiz";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -11,11 +11,11 @@ const Container = styled.div`
 
 export default function QuizePage() {
   return (
-    <div>
+    <>
       <Nav />
       <Container>
         <Quiz />
       </Container>
-    </div>
+    </>
   );
 }

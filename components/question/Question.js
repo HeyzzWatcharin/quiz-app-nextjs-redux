@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 const H1 = styled.h1`
-  margin: 15px 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   font-size: 25px;
   font-family: Arial, sans-serif;
   font-weight: normal;
